@@ -1,0 +1,61 @@
+<div class="form myForm" [ngClass]="formStatus">
+  <h2 id="registration">Registration Form</h2>
+  <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()">
+    <div formGroupName="personDetails">
+      <label for="fname">First Name</label>
+      <input type="text" id="fname" placeholder="Your name.." formControlName="firstname">
+      <div>
+        <small *ngIf="reactiveForm.get('personDetails.firstname').errors?.['required']">
+          First Name is a required Feild.
+        </small>
+        <small *ngIf="reactiveForm.get('personDetails.firstname').errors?.['noSpaceAllowed']">
+          First Name cannot contain space
+        </small>
+      </div>
+      <label for="lname">Last Name</label>
+      <input type="text" id="lname" placeholder="Your last name.." formControlName="lastname">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Your last email.." formControlName="email">
+      <div>
+        <span style="color: red"
+          *ngIf="!reactiveForm.get('personDetails.email')?.valid && reactiveForm.get('personDetails.email')?.touched">
+          The email you entered is not a valid Email..</span>
+      </div>
+      <!-- <div *ngIf="reactiveForm.get('personDetails')?.invalid && reactiveForm.get('personDetails')?.touched">
+        <small>Some of the required fields do not have a valid value.</small>
+      </div>
+      <button >Set Default Values</button> -->
+    </div>
+    <label for="country">Country</label>
+    <select id="country" formControlName="country">
+      <option value="australia">Australia</option>
+      <option value="canada">Canada</option>
+      <option value="usa">USA</option>
+      <option value="india">India</option>
+      <option value="uk">UK</option>
+    </select>
+    <label for="gender">Gender:</label>
+    <!-- <span *ngFor="let gen of gender">
+      <input type="radio" [value]="gen.value" formControlName="gender">
+      <label>{{ gen.value }}</label>
+    </span> -->
+    <br><br>
+    <label>Hobbies <i>(Optional)</i></label>
+    <div class="form-inline">
+      <label><input type="checkbox" [value]="'sports'" formControlName="hobbies"> Sports</label>
+      <label><input type="checkbox" [value]="'movies'" formControlName="hobbies"> Movies</label>
+      <label><input type="checkbox" [value]="'music'" formControlName="hobbies"> Music</label>
+    </div>
+
+    <div formArrayName="skills">
+      <ng-container *ngFor="let skill of reactiveForm.get('skills')['controls']; index as i">
+        <input type="text" placeholder="add skills" formControlName="{{i}}">
+      </ng-container>
+      <button (click)="addSkills()">+ Add Skills</button>
+    </div>
+    <input type="submit" value="Submit" id="btn" >
+
+    <!-- [disabled]="reactiveForm.invalid" -->
+  </form>
+</div>
+
